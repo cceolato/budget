@@ -25,7 +25,6 @@ public class Budget {
 	@OneToMany(mappedBy = "budget")
 	private List<Account> accounts;
 	
-	
 	public Long getIdBudget() {
 		return idBudget;
 	}

@@ -3,8 +3,12 @@ package br.com.ceolato.budget.dto;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import br.com.ceolato.budget.entities.Account;
 
+@JsonInclude(Include.NON_EMPTY)
 public class BudgetDTO {
 
 	private Long idBudget;
