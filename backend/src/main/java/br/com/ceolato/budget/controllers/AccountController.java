@@ -12,27 +12,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ceolato.budget.dto.BudgetDTO;
-import br.com.ceolato.budget.services.BudgetService;
+import br.com.ceolato.budget.dto.AccountDTO;
+import br.com.ceolato.budget.services.AccountService;
 import br.com.ceolato.budget.services.exception.NotFoundException;
 
 @RestController
-@RequestMapping("/budget")
-public class BudgetController {
+@RequestMapping("/budget/{idBudget}/account")
+public class AccountController {
 
 	@Autowired
-	private BudgetService budgetService;
+	private AccountService accountService;
 	
 	@GetMapping
-	public ResponseEntity<List<BudgetDTO>> listAll() {
-		List<BudgetDTO> listBudget = budgetService.list();
-		return ResponseEntity.ok(listBudget);
+	public ResponseEntity<List<AccountDTO>> listAll(long idBudget) {
+		List<AccountDTO> listAccount = accountService.list(idBudget);
+		return ResponseEntity.ok(listAccount);
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> listOne(@PathVariable long id){
 		try{
-			BudgetDTO dto = budgetService.find(id);
+			AccountDTO dto = accountService.find(id);
 			return ResponseEntity.ok(dto);
 		} catch (NotFoundException nf) {
 			return ResponseEntity.notFound().build();
@@ -41,9 +41,14 @@ public class BudgetController {
 	
 	@PostMapping
 	@PutMapping
-	public ResponseEntity<BudgetDTO> create(@RequestBody BudgetDTO dto) {
-		BudgetDTO budget = budgetService.save(dto);
-		return ResponseEntity.ok(budget);
+	public ResponseEntity<AccountDTO> create(@RequestBody AccountDTO dto, @PathVariable long idBudget) {
+		try {
+			AccountDTO account = accountService.save(idBudget, dto);
+			return ResponseEntity.ok(account);
+		} catch (NotFoundException nf) {
+			return ResponseEntity.notFound().build();
+		}
 	}
+	
 	
 }
